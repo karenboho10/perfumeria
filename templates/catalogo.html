@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Perfumes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="catalogo-container">
+    <h1>🌸 Catálogo de Perfumes</h1>
+
+    <div class="catalogo-grid">
+    {% for p in perfumes %}
+        <div class="catalogo-card">
+            <img src="{{ p.imagen_url }}" alt="{{ p.nombre }}">
+            <h2>{{ p.nombre }}</h2>
+            <p><strong>Marca:</strong> {{ p.marca }}</p>
+            <p>{{ p.descripcion }}</p>
+            <p class="precio"><strong>Precio:</strong> ${{ p.precio }}</p>
+        </div>
+    {% endfor %}
+    </div>
+
+    <a href="{{ url_for('home') }}">⬅ Volver al inicio</a>
+</div>
+
+</body>
+</html>
+
+

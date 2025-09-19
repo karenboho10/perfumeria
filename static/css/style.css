@@ -1,82 +1,70 @@
-/* Fondo oscuro */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #9492e7;
-    color: #0f0e0e;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+/* ==============================
+   Estilos para el Catálogo
+   ============================== */
+
+/* Contenedor general del catálogo */
+.catalogo-container {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Contenedor del formulario */
-.form-container {
-    background-color: #ca9ee7;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(255, 252, 252, 0.966);
-    width: 320px;
+/* Título */
+.catalogo-container h1 {
     text-align: center;
-}
-
-/* Títulos */
-.form-container h2 {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     color: #ffffff;
-    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-/* Inputs */
-.form-container input[type="text"],
-.form-container input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: none;
+/* Grid de tarjetas de perfumes */
+.catalogo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Tarjeta de cada perfume */
+.catalogo-card {
+    background-color: #ca9ee7;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.catalogo-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Imagen del perfume */
+.catalogo-card img {
+    max-width: 100%;
+    height: 220px;
+    object-fit: cover;
     border-radius: 8px;
-    background-color: #fdf7f7;
+    margin-bottom: 15px;
+}
+
+/* Nombre y marca */
+.catalogo-card h2 {
     color: #ffffff;
-    font-size: 14px;
-    outline: none;
-    transition: background 0.3s;
+    margin: 10px 0 5px 0;
 }
 
-.form-container input[type="text"]:focus,
-.form-container input[type="password"]:focus {
-    background-color: #333333;
+.catalogo-card p {
+    margin: 5px 0;
+    color: #0f0e0e;
+    font-weight: 500;
 }
 
-/* Botones */
-.form-container button {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #f581e5, #ff6adf);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: transform 0.2s, background 0.3s;
-    margin-top: 15px;
-}
-
-.form-container button:hover {
-    background: linear-gradient(135deg, #5aa9f0, #3f7dc4);
-    transform: scale(1.05);
-}
-
-/* Links */
-.form-container a {
-    display: block;
-    margin-top: 12px;
+/* Precio */
+.catalogo-card .precio {
+    font-size: 18px;
     color: #3825df;
-    text-decoration: none;
-    font-size: 13px;
-}
-
-.form-container a:hover {
-    color: #ffffff;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 

@@ -260,6 +260,47 @@ def reset_password(username):
     return render_template("reset_password.html", username=username)
 
 
+@app.route("/catalogo")
+def catalogo():
+    if "username" not in session:  # Solo usuarios logueados pueden ver el catálogo
+        return redirect(url_for("login"))
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM perfumes")
+    perfumes = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return render_template("catalogo.html", perfumes=perfumes)
+
+
+@app.route("/catalogo/agregar", methods=["GET", "POST"])
+def agregar_perfume():
+    if "username" not in session: 
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        marca = request.form["marca"]
+        descripcion = request.form["descripcion"]
+        precio = request.form["precio"]
+        imagen_url = request.form["imagen_url"]
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO perfumes (nombre, marca, descripcion, precio, imagen_url) VALUES (%s, %s, %s, %s, %s)",
+            (nombre, marca, descripcion, precio, imagen_url)
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        flash("Perfume agregado correctamente ✅")
+        return redirect(url_for("catalogo"))
+
+    return render_template("agregar_perfume.html")
 
 
 if __name__ == "__main__":
