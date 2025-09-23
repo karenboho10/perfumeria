@@ -305,5 +305,38 @@ def agregar_perfume():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    @app.route("/agregar_carrito/<int:perfume_id>")
+def agregar_carrito(perfume_id):
+    # Inicializa carrito si no existe
+    if "carrito" not in session:
+        session["carrito"] = []
+
+    # Busca el perfume en la misma lista que en /catalogo
+    perfumes = [
+        {"id": 1, "nombre": "Perfume A", "precio": 50},
+        {"id": 2, "nombre": "Perfume B", "precio": 60},
+    ]
+    perfume = next((p for p in perfumes if p["id"] == perfume_id), None)
+
+    if perfume:
+        session["carrito"].append(perfume)
+        session.modified = True
+        flash(f"{perfume['nombre']} agregado al carrito 🛒")
+
+    return redirect(url_for("catalogo"))
+
+
+@app.route("/carrito")
+def ver_carrito():
+    carrito = session.get("carrito", [])
+    total = sum(item["precio"] for item in carrito)
+    return render_template("carrito.html", carrito=carrito, total=total)
+
+
+@app.route("/vaciar_carrito")
+def vaciar_carrito():
+    session.pop("carrito", None)
+    flash("Carrito vaciado 🗑️")
+    return redirect(url_for("ver_carrito"))
 
 
