@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+{% set estilo = 1 %} {# 👈 Cambia este valor: 1, 2 o 3 #}
+
+{% if estilo == 1 %}
+<!-- 🟢 Opción 1: Imagen de fondo con glassmorphism -->
+<style>
+    body {
+        background: url("{{ url_for('static', filename='img/kickfondo.jpg') }}") no-repeat center center fixed;
+        background-size: cover;
+    }
+    .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        padding: 40px;
+    }
+</style>
+<div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <div class="glass-card text-center col-md-8">
+        <h1 class="fw-bold">Bienvenido a la aplicación</h1>
+        <p>Gestiona usuarios de forma rápida, sencilla y segura.</p>
+        <a href="{{ url_for('listar_usuarios') }}" class="btn btn-primary btn-lg">👥 Ver Usuarios</a>
+        <a href="{{ url_for('registro') }}" class="btn btn-success btn-lg ms-2">➕ Registrar Usuario</a>
+    </div>
+</div>
+
+<!-- 🔹 Nuevo div con imagen destacada y botón catálogo -->
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="glass-card text-center">
+            <div class="card shadow-lg">
+                <img src="{{ url_for('static', filename='img/catalogoinicio.webp') }}" 
+                     class="card-img-top" 
+                     alt="Catálogo" 
+                     style="max-height: 300px; object-fit: cover;">
+                <div class="card-body">
+                    <h3 class="card-title">Explora nuestro catálogo</h3>
+                    <p class="card-text">Encuentra los mejores productos disponibles.</p>
+                    <a href="{{ url_for('catalogo') }}" class="btn btn-outline-primary btn-lg">🛒 Ir al Catálogo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% elif estilo == 2 %}
+<!-- 🔵 Opción 2: Gradiente animado -->
+<style>
+    body {
+        background: linear-gradient(-45deg, #1e3c72, #2a5298, #ff512f, #dd2476);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: white;
+    }
+    @keyframes gradientBG {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
+    .hero {
+        text-align: center;
+        padding: 100px 20px;
+    }
+</style>
+<div class="hero">
+    <h1 class="fw-bold display-3">Bienvenido 🚀</h1>
+    <p class="lead">Una app elegante para gestionar usuarios</p>
+    <a href="{{ url_for('listar_usuarios') }}" class="btn btn-light btn-lg">👥 Ver Usuarios</a>
+    <a href="{{ url_for('registro') }}" class="btn btn-outline-light btn-lg ms-2">➕ Registrar Usuario</a>
+</div>
+
+<!-- 🔹 Nuevo div con imagen destacada y botón catálogo -->
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 text-center">
+            <div class="card shadow-lg">
+                <img src="{{ url_for('static', filename='img/catalogo_banner.jpg') }}" 
+                     class="card-img-top" 
+                     alt="Catálogo" 
+                     style="max-height: 300px; object-fit: cover;">
+                <div class="card-body">
+                    <h3 class="card-title">Explora nuestro catálogo</h3>
+                    <p class="card-text">Encuentra los mejores productos disponibles.</p>
+                    <a href="{{ url_for('catalogo') }}" class="btn btn-outline-primary btn-lg">🛒 Ir al Catálogo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% elif estilo == 3 %}
+<!-- ⚫ Opción 3: Oscuro minimalista -->
+<style>
+    body {
+        background-color: #121212;
+        background-image: radial-gradient(#333 1px, transparent 1px);
+        background-size: 20px 20px;
+        color: white;
+    }
+    .welcome-card {
+        background: #1e1e1e;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    }
+</style>
+<div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <div class="welcome-card text-center col-md-8">
+        <h1 class="fw-bold">Bienvenido 👋</h1>
+        <p>Un diseño minimalista y profesional</p>
+        <a href="{{ url_for('listar_usuarios') }}" class="btn btn-primary btn-lg">👥 Ver Usuarios</a>
+        <a href="{{ url_for('registro') }}" class="btn btn-success btn-lg ms-2">➕ Registrar Usuario</a>
+    </div>
+</div>
+
+<!-- 🔹 Nuevo div con imagen destacada y botón catálogo -->
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 text-center">
+            <div class="card shadow-lg">
+                <img src="{{ url_for('static', filename='img/catalogo_banner.jpg') }}" 
+                     class="card-img-top" 
+                     alt="Catálogo" 
+                     style="max-height: 300px; object-fit: cover;">
+                <div class="card-body">
+                    <h3 class="card-title">Explora nuestro catálogo</h3>
+                    <p class="card-text">Encuentra los mejores productos disponibles.</p>
+                    <a href="{{ url_for('catalogo') }}" class="btn btn-outline-primary btn-lg">🛒 Ir al Catálogo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Catálogo{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">🛍️ Catálogo de Productos</h2>
+    <div class="row">
+        {% for p in productos %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <img src="{{ url_for('static', filename='img/' ~ p.foto) }}" 
+                        class="card-img-top" 
+                        alt="{{ p.nom_producto }}" 
+                        style="height:200px; object-fit:cover;">
+                    <h5 class="card-title">{{ p.nom_producto }}</h5>
+                    <p class="card-text">{{ p.descripcion }}</p>
+                    <p><strong>💲 {{ p.precio_producto }}</strong></p>
+                    <p><small>Stock: {{ p.stok }}</small></p>
+                    <a href="{{ url_for('agregar_carrito', id=p.id_producto) }}" class="btn btn-primary w-100">
+                        🛒 Agregar al Carrito
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-3">
+        <a href="{{ url_for('ver_carrito') }}" class="btn btn-success">🛒 Ver Carrito</a>
+    </div>
+</div>
+{% endblock %}
