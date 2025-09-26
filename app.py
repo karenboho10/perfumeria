@@ -52,7 +52,6 @@ class Rol(db.Model):
     id_rol = db.Column(db.Integer, primary_key=True)
     rol = db.Column(db.Text, nullable=False)
 
-# Modelo de la tabla usuario
 class Usuario(db.Model):
     __tablename__ = "usuario"
     id_cliente = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -63,12 +62,17 @@ class Usuario(db.Model):
     fecha_nac = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(30), nullable=False, unique=True)
     telefono = db.Column(db.Integer, nullable=False)
-    contraseña = db.Column(db.String(255), nullable=False)  # 🔹 conviene convertirla a string/hash
+    contraseña = db.Column(db.String(255), nullable=False)
     id_rol = db.Column(db.Integer, db.ForeignKey("rol.id_rol"), nullable=False)
     estado = db.Column(db.Boolean, default=True)
+    
+    # Campos nuevos:
+    intentos_fallidos = db.Column(db.Integer, default=0)
+    bloqueado = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f"<Usuario {self.nombre} {self.apellido}>"
+
 
 # Modelo de la tabla productos
 class Producto(db.Model):
@@ -114,16 +118,36 @@ def login():
     if request.method == "POST":
         email = request.form["email"].strip().lower()
         password = request.form["password"]
-
         usuario = Usuario.query.filter_by(email=email).first()
-        if not usuario or not check_password_hash(str(usuario.contraseña), password):
+
+        if not usuario:
             return render_template("login.html", error="Credenciales inválidas")
 
-        session["usuario"] = f"{usuario.nombre} {usuario.apellido}"  # 👈 Mostramos el nombre en la navbar
-        flash("Has iniciado sesión correctamente", "success")
-        return redirect(url_for("home"))
+        if usuario.bloqueado:
+            return render_template("login.html", error="Cuenta bloqueada por múltiples intentos fallidos.")
+
+        if check_password_hash(str(usuario.contraseña), password):
+            # Login correcto: reiniciamos intentos
+            usuario.intentos_fallidos = 0
+            db.session.commit()
+            session["usuario"] = f"{usuario.nombre} {usuario.apellido}"
+            flash("Has iniciado sesión correctamente", "success")
+            return redirect(url_for("home"))
+        else:
+            # Incrementamos intentos fallidos
+            usuario.intentos_fallidos += 1
+
+            if usuario.intentos_fallidos >= 3:
+                usuario.bloqueado = True
+                db.session.commit()
+                return render_template("login.html", error="Cuenta bloqueada por múltiples intentos fallidos.")
+            else:
+                db.session.commit()
+                intentos_restantes = 3 - usuario.intentos_fallidos
+                return render_template("login.html", error=f"Contraseña incorrecta. Te quedan {intentos_restantes} intento(s).")
 
     return render_template("login.html")
+
 
 
 
@@ -407,6 +431,18 @@ def vaciar_carrito():
     session.pop("carrito", None)
     flash("🧹 Carrito vaciado", "info")
     return redirect(url_for("catalogo"))
+
+
+
+@app.route("/admin/desbloquear/<int:id_cliente>")
+def desbloquear_usuario(id_cliente):
+    usuario = Usuario.query.get_or_404(id_cliente)
+    usuario.intentos_fallidos = 0
+    usuario.bloqueado = False
+    db.session.commit()
+    flash("Usuario desbloqueado", "info")
+    return redirect(url_for("listar_usuarios"))
+
 
 
 # ------------------- FIN RUTAS -------------------
